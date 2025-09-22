@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "e546eff3-cd3c-49af-8a13-674e4280697b",
+		"name": "librarysystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43215903"
+	},
+	"item": [
+		{
+			"name": "Book",
+			"item": [
+				{
+					"name": "Addbook",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let newBookName=pm.variables.replaceIn('{{$randomColor}}') + \" \"+ pm.variables.replaceIn('{{$randomMonth}}')\r",
+									"let newISBN=pm.variables.replaceIn('{{$randomInt}}')*55\r",
+									"let newAisle=pm.variables.replaceIn('{{$randomInt}}')\r",
+									"let newAuthor=pm.variables.replaceIn('{{$randomFullName}}')\r",
+									"pm.collectionVariables.set(\"randomBookName\",newBookName)\r",
+									"pm.collectionVariables.set(\"randomBookISBN\",newISBN)\r",
+									"pm.collectionVariables.set(\"randomBookAisle\",newAisle)\r",
+									"pm.collectionVariables.set(\"randomBookAuthor\",newAuthor)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let myresponse=pm.response.json()\r",
+									"\r",
+									"let generatId= myresponse.ID\r",
+									"console.log(generatId)\r",
+									"pm.collectionVariables.set(\"newID\",generatId)\r",
+									"\r",
+									"pm.test(\"the boo has been added\",function(){\r",
+									"\r",
+									"pm.expect(myresponse.Msg).to.eql(\"successfully added\")\r",
+									"\r",
+									"})\r",
+									"pm.test(\"the states 200\",function(){\r",
+									"\r",
+									"pm.response.to.have.status(200)\r",
+									"\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"{{randomBookAuthor}}\",\r\n\"isbn\":\"{{randomBookISBN}}\",\r\n\"aisle\":\"{{randomBookAisle}}\",\r\n\"author\":\"{{randomBookAuthor}} \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rahulshettyacademy.com/Library/Addbook.php",
+							"protocol": "https",
+							"host": [
+								"rahulshettyacademy",
+								"com"
+							],
+							"path": [
+								"Library",
+								"Addbook.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rahulshettyacademy.com/Library/GetBook.php?ID={{newID}}",
+							"protocol": "https",
+							"host": [
+								"rahulshettyacademy",
+								"com"
+							],
+							"path": [
+								"Library",
+								"GetBook.php"
+							],
+							"query": [
+								{
+									"key": "ID",
+									"value": "{{newID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBook",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"ID\" : \"{{newID}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rahulshettyacademy.com/Library/DeleteBook.php",
+							"protocol": "https",
+							"host": [
+								"rahulshettyacademy",
+								"com"
+							],
+							"path": [
+								"Library",
+								"DeleteBook.php"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "randomBookName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "randomBookISBN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "randomBookAisle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "randomBookAuthor",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "newID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
